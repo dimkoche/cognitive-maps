@@ -1,0 +1,59 @@
+$def with (item)
+
+<div class="page-header">
+    <h4>$item.title</h4>
+</div>
+
+
+<div class="page-header">
+    <h6>Факторы:</h6>
+</div>
+<ul class="list-group">
+    $for f in item.get_factors():
+        <li class="list-group-item">$f</li>
+</ul>
+<form class="form-inline" action="/map/add-factor" method="POST">
+    <input type="hidden" name="mapHash" value="$item.hash">
+    <input type="text" class="form-control map-show-factor-name" name="factorName" placeholder="Factor name">
+    <button type="submit" class="btn btn-default">Add</button>
+</form>
+
+
+<div class="page-header">
+    <h6>Отношение факторов:</h6>
+</div>
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        $for f in item.relations:
+            <td>$f</td>
+    </tr>
+
+    $item.relations
+    $for f1 in item.relations:
+        <tr>
+            <td>$f1</td>
+            $for f2 in item.relations[f1]:
+                <td>
+                    <select class="form-control relation-effect"
+                            data-map="$item.hash"
+                            data-f1="$item.relations[f1][f2]['f1']"
+                            data-f2="$item.relations[f1][f2]['f2']">
+                        $for i in (0,1,2,3,4,5):
+                            $code:
+                                if i == item.relations[f1][f2]['eff']:
+                                    selected = 'selected'
+                                else:
+                                    selected = ''
+                                if f1 == f2:
+                                    disabled = 'disabled'
+                                else:
+                                    disabled = ''
+
+                            <option $selected $disabled> $i</option>
+                    </select>
+                </td>
+        </tr>
+
+
+</table>

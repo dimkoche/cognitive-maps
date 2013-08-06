@@ -1,0 +1,22 @@
+import web
+
+urls = (
+    '/', 'views.view.Index',
+    '/map/new', 'views.view.MapAdd',
+    '/map/show/(.+)', 'views.view.MapShow',
+    '/map/add-factor', 'views.view.MapAddFactor',
+    '/map/change-factor', 'views.view.MapChangeFactor',
+)
+
+if __name__ == "__main__":
+    app = web.application(urls, globals())
+    app.internalerror = web.debugerror
+
+    session = web.session.Session(
+        app,
+        web.session.DiskStore('sessions'),
+        initializer={'user_id': 0, 'username': 'Guest'}
+    )
+    web.web_session = session
+
+    app.run()
