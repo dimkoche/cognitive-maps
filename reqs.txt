@@ -2,5 +2,5 @@ MySQL-python
 web.py
 nose
 coverage
-matplotlib
 numpy
+matplotlib
