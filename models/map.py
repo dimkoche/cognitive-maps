@@ -17,6 +17,7 @@ class Map():
     hash = None
     factors = None
     relations = None
+    koef = None
 
     def __init__(self, mid=None, hash=None, email=None, title=None):
         if mid:
@@ -74,8 +75,11 @@ class Map():
         self.title = item.title
         self.factors = []
         self.relations = {}
+        self.koef = {}
         for f in factors:
             self.factors.append(f['name'])
+            self.koef[f['name']] = f['koef']
+        print self.factors, self.koef
         for r in relations:
             f1 = r['f2_name']
             f2 = r['f1_name']
@@ -119,7 +123,7 @@ class Map():
 
     def change_factor_effect(self, f1, f2, effect):
         effect = int(effect)
-        if effect < 0 or effect > 9:
+        if effect < -9 or effect > 9:
             return False
         print DB.update(
             'map_data',
@@ -130,4 +134,18 @@ class Map():
                 'f2': f2
             },
             effect=effect
+        )
+
+    def change_koef(self, f, koef):
+        koef = int(koef)
+        if koef < -99 or koef > 99:
+            return False
+        print DB.update(
+            'map_factor',
+            where='map_id=$map_id AND id=$f',
+            vars={
+                'map_id': self.id,
+                'f': f
+            },
+            koef=koef
         )

@@ -16,12 +16,31 @@ function relationOnChange(el) {
     );
 }
 
-function initRalationGrid() {
+function koefOnChange(el) {
+    var koef = el.val();
+    var map = el.data('map');
+    var f = el.data('f');
+
+    $.post(
+        "/map/change-koef",
+        {
+            map: map,
+            f: f,
+            koef: koef
+        },
+        function (data) {}
+    );
+}
+
+function initRelationGrid() {
     $(".relation-effect").change(function (event) {
         relationOnChange($(this));
+    });
+    $(".factor-koef").change(function (event) {
+        koefOnChange($(this));
     });
 }
 
 $(document).ready(function () {
-    initRalationGrid();
+    initRelationGrid();
 });

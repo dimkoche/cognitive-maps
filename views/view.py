@@ -3,13 +3,14 @@ import web
 
 import config
 
+from helpers.lsat import draw
 from models.map import Map, MapException
-
 
 t_globals = dict(
     datestr=web.datestr,
     str=str,
     sort=sorted,
+    xrange=xrange,
     ctx=web.web_session
 )
 render = web.template.render('templates/', cache=config.cache, globals=t_globals)
@@ -83,4 +84,50 @@ class MapChangeFactor:
             raise web.seeother('/map/show/%s' % m.hash)
 
         m.change_factor_effect(f1, f2, effect)
+        raise web.seeother('/map/show/%s' % m.hash)
+
+
+class MapUpdateImage:
+    def GET(self):
+        data = web.input()
+        hash = data.mapHash
+        if not hash:
+            raise web.seeother('/')
+
+        try:
+            m = Map(hash=hash)
+        except MapException:
+            raise web.seeother('/')
+
+        koef = []
+        keys = []
+        data = []
+        for f1 in m.relations:
+            keys.append(f1)
+            koef.append(m.koef[f1])
+            data.append([float(m.relations[f1][f2]['eff']) / 10 for f2 in m.relations[f1]])
+
+        draw(data, keys, [koef], 'static/maps/%s.png' % m.hash)
+        #return keys, data, koef
+        raise web.seeother('/map/show/%s' % m.hash)
+
+
+class MapChangeKoef:
+    def POST(self):
+        data = web.input()
+        hash = data.map
+        f = data.f
+        koef = data.koef
+        if not hash:
+            raise web.seeother('/')
+
+        try:
+            m = Map(hash=hash)
+        except MapException:
+            raise web.seeother('/')
+
+        if not f:
+            raise web.seeother('/map/show/%s' % m.hash)
+
+        m.change_koef(f, koef)
         raise web.seeother('/map/show/%s' % m.hash)

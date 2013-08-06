@@ -6,6 +6,8 @@ urls = (
     '/map/show/(.+)', 'views.view.MapShow',
     '/map/add-factor', 'views.view.MapAddFactor',
     '/map/change-factor', 'views.view.MapChangeFactor',
+    '/map/update-image', 'views.view.MapUpdateImage',
+    '/map/change-koef', 'views.view.MapChangeKoef',
 )
 
 if __name__ == "__main__":
