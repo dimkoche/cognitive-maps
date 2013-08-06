@@ -8,10 +8,11 @@ $def with (item)
 <div class="page-header">
     <h6>Факторы:</h6>
 </div>
-<ul class="list-group">
+<p class="lead">
     $for f in item.get_factors():
-        <li class="list-group-item">$f</li>
-</ul>
+        <code>$f</code>
+</p>
+
 <form class="form-inline" action="/map/add-factor" method="POST">
     <input type="hidden" name="mapHash" value="$item.hash">
     <input type="text" class="form-control map-show-factor-name" name="factorName" placeholder="Factor name">
@@ -29,7 +30,6 @@ $def with (item)
             <td>$f</td>
     </tr>
 
-    $item.relations
     $for f1 in item.relations:
         <tr>
             <td>$f1</td>
