@@ -28,10 +28,10 @@ $def with (item)
 <div class="page-header">
     <h6>Отношение факторов:</h6>
 </div>
-<table class="table table-bordered">
+<table class="table table-bordered" id="table-relations">
     <tr>
         <th>#</th>
-        <th>Коэф.</th>
+        <th> <div class="koef-column">Коэф.</div></th>
         $for f in item.relations:
             <td><div class="rotate-table-head">$f</div></td>
     </tr>

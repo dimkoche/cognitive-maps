@@ -39,6 +39,7 @@ function initRelationGrid() {
     $(".factor-koef").change(function (event) {
         koefOnChange($(this));
     });
+    $("#table-relations").width(700);
 }
 
 $(document).ready(function () {
