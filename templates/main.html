@@ -1,18 +1,18 @@
 <div class="page-header">
-    <h1>Create new map</h1>
+    <h2>Create new map</h2>
 </div>
-<p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom
-    HTML and CSS. A fixed navbar has been added within <code>#wrap</code> with <code>padding-top: 60px;</code>
-    on the <code>.container</code>.
-</p>
-<form action="/map/new" method="POST">
-    <fieldset>
-        <div class="form-group">
-            <label for="newMapEmail">Email address</label>
-            <input type="text" class="form-control" id="newMapEmail" name="mapEmail" placeholder="Enter email">
-            <label for="newMapTitle">Map title</label>
-            <input type="text" class="form-control" id="newMapTitle" name="mapTitle" placeholder="Enter title">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-    </fieldset>
-</form>
+<p class="lead">Details will be sent to your email.</p>
+
+<div class="main-page-form">
+    <form action="/map/new" method="POST">
+        <fieldset>
+            <div class="form-group">
+                <label for="newMapEmail">Email address</label>
+                <input type="text" class="form-control" id="newMapEmail" name="mapEmail" placeholder="Enter email">
+                <label for="newMapTitle">Map title</label>
+                <input type="text" class="form-control" id="newMapTitle" name="mapTitle" placeholder="Enter title">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </fieldset>
+    </form>
+</div>

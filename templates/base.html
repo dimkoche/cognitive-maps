@@ -1,4 +1,4 @@
-$def with (page)
+$def with (page, active=None)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,21 +36,15 @@ $def with (page)
 
             <div class="nav-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li class="nav-header">Nav header</li>
-                            <li><a href="#">Separated link</a></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
+                    $code:
+                        home_active_class = ''
+                        about_active_class = ''
+                        if active == 'home':
+                            home_active_class = 'active'
+                        if active == 'about':
+                            about_active_class = 'active'
+                    <li class="$home_active_class"><a href="/">Home</a></li>
+                    <li class="$about_active_class"><a href="/about">About</a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
@@ -66,8 +60,7 @@ $def with (page)
 
 <div id="footer">
     <div class="container">
-        <p class="text-muted credit">Example courtesy <a href="http://martinbean.co.uk">Martin Bean</a> and <a
-                href="http://ryanfait.com/sticky-footer/">Ryan Fait</a>.</p>
+        <p class="text-muted credit"><a href="http://dimkoche.ru">Dmitriy Chernyshov</a>, 2013</p>
     </div>
 </div>
 

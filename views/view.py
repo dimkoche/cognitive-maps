@@ -20,7 +20,12 @@ render._keywords['globals']['render'] = render
 
 class Index:
     def GET(self):
-        return render.base(render.main())
+        return render.base(render.main(), 'home')
+
+
+class About:
+    def GET(self):
+        return render.base(render.about(), 'about')
 
 
 class MapAdd:

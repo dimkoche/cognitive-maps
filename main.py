@@ -2,6 +2,7 @@ import web
 
 urls = (
     '/', 'views.view.Index',
+    '/about', 'views.view.About',
     '/map/new', 'views.view.MapAdd',
     '/map/show/(.+)', 'views.view.MapShow',
     '/map/add-factor', 'views.view.MapAddFactor',
