@@ -9,7 +9,7 @@ $def with (item)
 </form>
 
 <!--div><img src="/static/maps/${item.hash}.png" width="50%" height="50%" /></div-->
-<div id="chart_div" style="width: 900px; height: 400px;"></div>
+<div id="chart_div" style="width: 900px; height: 600px;"></div>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
   google.load("visualization", "1", {packages:["corechart"]});
@@ -26,7 +26,9 @@ $def with (item)
             var data = google.visualization.arrayToDataTable(res.data);
 
             var options = {
-              title: 'Factor change'
+              title: 'Factor change',
+              curveType: "function",
+              chartArea: {width: 600, height: 500}
             };
 
             var chart = new google.visualization.LineChart(document.getElementById('chart_div'));

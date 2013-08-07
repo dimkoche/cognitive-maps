@@ -5,7 +5,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 # Количество шагов
-steps = 20
+steps = 6
 
 
 def prepare_data(data, koef):
