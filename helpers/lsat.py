@@ -4,22 +4,20 @@ from smatrix import mmul, mtranspose, mround, msum
 import matplotlib
 import matplotlib.pyplot as plt
 
+# Количество шагов
+steps = 20
 
-def draw(data, keys, koef, img_name="figure.png"):
+
+def prepare_data(data, koef):
     koef_ = mtranspose(koef)
-
     # Следующий шаг изменений
     next_step = koef_
     # Сумма следующего шага изменений и всех предыдущих шагов
     sum_step = koef_
-
     # Изменения в % пошагово
     #step_vectors = []
     # Изменения в % нарастающим итогом
     sum_vectors = []
-
-    # Количество шагов
-    steps = 20
 
     for i in xrange(steps):
         next_step = mround(mmul(data, next_step), 1)
@@ -27,11 +25,14 @@ def draw(data, keys, koef, img_name="figure.png"):
         sum_step = msum(sum_step, next_step)
         sum_vectors.append(mtranspose(sum_step)[0])
     sum_vectors.insert(0, koef[0])
+    return sum_vectors
+
+
+def draw(data, keys, koef, img_name="figure.png"):
+    sum_vectors = prepare_data(data, koef)
 
     max_v = 0
     min_v = 0
-    print keys
-    print sum_vectors
     for r in sum_vectors:
         for v in r:
             if v > max_v:

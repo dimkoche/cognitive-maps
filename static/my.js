@@ -12,7 +12,8 @@ function relationOnChange(el) {
             f2: f2,
             effect: effect
         },
-        function (data) {}
+        function (data) {
+        }
     );
 }
 
@@ -28,7 +29,8 @@ function koefOnChange(el) {
             f: f,
             koef: koef
         },
-        function (data) {}
+        function (data) {
+        }
     );
 }
 

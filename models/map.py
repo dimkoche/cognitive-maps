@@ -3,6 +3,8 @@ import config
 import hashlib
 import random
 
+from helpers.lsat import prepare_data
+
 DB = config.DB
 
 
@@ -149,3 +151,24 @@ class Map():
             },
             koef=koef
         )
+
+    def get_chart_data(self):
+        koef = []
+        keys = []
+        data = []
+        for f1 in self.relations:
+            keys.append(f1)
+            koef.append(self.koef[f1])
+            data.append([float(self.relations[f1][f2]['eff']) / 10 for f2 in self.relations[f1]])
+        arr = prepare_data(data, [koef])
+        keys.insert(0, 'Steps')
+        arr.insert(0, keys)
+        arr2 = []
+        i = 0
+        for a in arr:
+            if i:
+                a.insert(0, i)
+                arr2.append(a)
+            i += 1
+
+        return arr

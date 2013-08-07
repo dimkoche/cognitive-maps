@@ -3,12 +3,38 @@ $def with (item)
 <div class="page-header">
     <h4>$item.title</h4>
 </div>
-<form class="inline-element" action="/map/update-image" method="GET">
+<!--form class="inline-element" action="/map/update-image" method="GET">
     <input type="hidden" name="mapHash" value="$item.hash">
     <button type="submit" class="btn btn-default">Update image</button>
 </form>
 
-<div><img src="/static/maps/${item.hash}.png" width="50%" height="50%" /></div>
+<!--div><img src="/static/maps/${item.hash}.png" width="50%" height="50%" /></div-->
+<div id="chart_div" style="width: 900px; height: 400px;"></div>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {
+    $$.get(
+        "/map/get-chart-data",
+        {map: '$item.hash'},
+        function (res) {
+            var res = $$.parseJSON(res);
+            if (!res.success) {
+                return false;
+            }
+            var data = google.visualization.arrayToDataTable(res.data);
+
+            var options = {
+              title: 'Factor change'
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    );
+  }
+</script>
 
 <div class="page-header">
     <h6>Факторы:</h6>

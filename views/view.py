@@ -1,4 +1,5 @@
 # coding: utf-8
+import json
 import web
 
 import config
@@ -131,3 +132,21 @@ class MapChangeKoef:
 
         m.change_koef(f, koef)
         raise web.seeother('/map/show/%s' % m.hash)
+
+
+class MapGetChartData:
+    def GET(self):
+        data = web.input()
+        hash = data.map
+        if not hash:
+            raise web.seeother('/')
+
+        try:
+            m = Map(hash=hash)
+        except MapException:
+            raise web.seeother('/')
+
+        data = m.get_chart_data()
+        if not data:
+            return json.dumps({'success': False})
+        return json.dumps({'success': True, 'data': data})
