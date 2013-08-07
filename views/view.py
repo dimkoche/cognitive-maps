@@ -37,13 +37,16 @@ class MapAdd:
 
 class MapShow:
     def GET(self, hash):
+        data = web.input()
+        enabled = True if 'enabled' in data.keys() else False
         try:
             m = Map(hash=hash)
         except MapException:
             raise web.seeother('/')
         if not m.id:
             raise web.seeother('/')
-        return render.base(render.map.show(m))
+
+        return render.base(render.map.show(m, enabled))
 
 
 class MapAddFactor:

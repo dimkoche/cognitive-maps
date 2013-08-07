@@ -1,4 +1,4 @@
-$def with (item)
+$def with (item, enabled)
 
 <div class="page-header">
     <h4>$item.title</h4>
@@ -77,8 +77,11 @@ $def with (item)
                                 selected = 'selected'
                             else:
                                 selected = ''
-
-                        <option $selected> $i</option>
+                            if not enabled:
+                                disabled = 'disabled'
+                            else:
+                                disabled = ''
+                        <option $selected $disabled> $i</option>
                 </select>
             </td>
             $for f2 in item.relations[f1]:
@@ -93,7 +96,7 @@ $def with (item)
                                     selected = 'selected'
                                 else:
                                     selected = ''
-                                if f1 == f2:
+                                if f1 == f2 or not enabled:
                                     disabled = 'disabled'
                                 else:
                                     disabled = ''
