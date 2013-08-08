@@ -17,6 +17,7 @@ class Map():
     email = None
     title = None
     hash = None
+    passkey = None
     factors = None
     relations = None
     koef = None
@@ -31,13 +32,15 @@ class Map():
         elif email:
             m = hashlib.md5('%s' % random.random())
             hash = m.hexdigest()
+            passkey = random.randint(10**7, 10**9-1)
             if not title:
                 title = 'Model #%s' % hash
             self.id = DB.insert(
                 'map',
                 email=email,
                 hash=hash,
-                title=title
+                title=title,
+                passkey=passkey
             )
             if self.id:
                 self._load_attrs()
@@ -75,6 +78,7 @@ class Map():
         self.hash = item.hash
         self.email = item.email
         self.title = item.title
+        self.passkey = item.passkey
         self.factors = []
         self.relations = {}
         self.koef = {}
@@ -160,6 +164,8 @@ class Map():
             keys.append(f1)
             koef.append(self.koef[f1])
             data.append([float(self.relations[f1][f2]['eff']) / 10 for f2 in self.relations[f1]])
+        if not data:
+            return False
         arr = prepare_data(data, [koef])
         keys.insert(0, 'Steps')
         arr.insert(0, keys)

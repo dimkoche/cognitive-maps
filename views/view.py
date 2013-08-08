@@ -18,6 +18,22 @@ render = web.template.render('templates/', cache=config.cache, globals=t_globals
 render._keywords['globals']['render'] = render
 
 
+def is_editable(map, data):
+    if 'map' in web.web_session and web.web_session.map == map.hash:
+        return True
+    if 'key' in data.keys():
+        if data.key == str(map.passkey):
+            web.web_session.map = map.hash
+            return True
+    return False
+
+
+def show_map(map, editable=False):
+    if editable:
+        raise web.seeother('/map/show/%s?key=%s' % (map.hash, map.passkey))
+    raise web.seeother('/map/show/%s' % map.hash)
+
+
 class Index:
     def GET(self):
         return render.base(render.main(), 'home')
@@ -37,20 +53,19 @@ class MapAdd:
             raise web.seeother('/')
 
         m = Map(email=email, title=title)
-        raise web.seeother('/map/show/%s' % m.hash)
+        show_map(m, editable=True)
 
 
 class MapShow:
     def GET(self, hash):
         data = web.input()
-        enabled = True if 'enabled' in data.keys() else False
         try:
             m = Map(hash=hash)
         except MapException:
             raise web.seeother('/')
         if not m.id:
             raise web.seeother('/')
-
+        enabled = is_editable(m, data)
         return render.base(render.map.show(m, enabled))
 
 
@@ -68,10 +83,12 @@ class MapAddFactor:
             raise web.seeother('/')
 
         if not factor:
-            raise web.seeother('/map/show/%s' % m.hash)
+            show_map(m)
 
-        m.add_factor(factor)
-        raise web.seeother('/map/show/%s' % m.hash)
+        editable = is_editable(m, data)
+        if editable:
+            m.add_factor(factor)
+        show_map(m, editable)
 
 
 class MapChangeFactor:
@@ -82,43 +99,21 @@ class MapChangeFactor:
         f2 = data.f2
         effect = data.effect
         if not hash:
-            raise web.seeother('/')
+            return json.dumps({'success': False, 'error': 'Incorrect data'})
 
         try:
             m = Map(hash=hash)
         except MapException:
-            raise web.seeother('/')
+            return json.dumps({'success': False, 'error': 'Incorrect data'})
 
         if not f1 or not f2:
-            raise web.seeother('/map/show/%s' % m.hash)
+            return json.dumps({'success': False, 'error': 'Incorrect data'})
 
-        m.change_factor_effect(f1, f2, effect)
-        raise web.seeother('/map/show/%s' % m.hash)
-
-
-class MapUpdateImage:
-    def GET(self):
-        data = web.input()
-        hash = data.mapHash
-        if not hash:
-            raise web.seeother('/')
-
-        try:
-            m = Map(hash=hash)
-        except MapException:
-            raise web.seeother('/')
-
-        koef = []
-        keys = []
-        data = []
-        for f1 in m.relations:
-            keys.append(f1)
-            koef.append(m.koef[f1])
-            data.append([float(m.relations[f1][f2]['eff']) / 10 for f2 in m.relations[f1]])
-
-        draw(data, keys, [koef], 'static/maps/%s.png' % m.hash)
-        #return keys, data, koef
-        raise web.seeother('/map/show/%s' % m.hash)
+        editable = is_editable(m, data)
+        if editable:
+            m.change_factor_effect(f1, f2, effect)
+            return json.dumps({'success': True})
+        return json.dumps({'success': False, 'error': 'Access denied'})
 
 
 class MapChangeKoef:
@@ -128,18 +123,21 @@ class MapChangeKoef:
         f = data.f
         koef = data.koef
         if not hash:
-            raise web.seeother('/')
+            return json.dumps({'success': False, 'error': 'Incorrect data'})
 
         try:
             m = Map(hash=hash)
         except MapException:
-            raise web.seeother('/')
+            return json.dumps({'success': False, 'error': 'Incorrect data'})
 
         if not f:
-            raise web.seeother('/map/show/%s' % m.hash)
+            return json.dumps({'success': False, 'error': 'Incorrect data'})
 
-        m.change_koef(f, koef)
-        raise web.seeother('/map/show/%s' % m.hash)
+        editable = is_editable(m, data)
+        if editable:
+            m.change_koef(f, koef)
+            return json.dumps({'success': True})
+        return json.dumps({'success': False, 'error': 'Access denied'})
 
 
 class MapGetChartData:
