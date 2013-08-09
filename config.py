@@ -23,4 +23,6 @@ else:
 
 cache = False
 
-socket_timeout = 5
+#SendGrid
+sd_username = 'user'
+sd_password = 'pass'

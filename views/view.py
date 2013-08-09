@@ -4,8 +4,8 @@ import web
 
 import config
 
-from helpers.lsat import draw
 from models.map import Map, MapException
+from helpers import mail
 
 t_globals = dict(
     datestr=web.datestr,
@@ -52,7 +52,10 @@ class MapAdd:
         if not email:
             raise web.seeother('/')
 
+        if not mail.is_email_valid(email):
+            raise web.seeother('/')
         m = Map(email=email, title=title)
+        mail.send_email(email, m, config.sd_username, config.sd_password)
         show_map(m, editable=True)
 
 
