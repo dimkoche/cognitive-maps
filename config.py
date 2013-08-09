@@ -21,7 +21,8 @@ if is_test():
 else:
     DB = web.database(dbn='mysql', host='localhost', db='systems', user='sot', pw='sot')
 
-cache = False
+is_production = True
+cache = is_production
 
 #SendGrid
 sd_username = 'user'
