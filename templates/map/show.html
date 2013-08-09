@@ -43,7 +43,10 @@ $def with (item, enabled)
 </div>
 <p class="lead">
     $for f in item.get_factors():
-        <code>$f</code>
+        $if enabled:
+            <code><a href="/map/edit-factor/$item.hash/$f['id']">$f['name']</a></code>
+        $else:
+            <code>$f['name']</code>
 </p>
 
 $if enabled:

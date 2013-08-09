@@ -159,3 +159,40 @@ class MapGetChartData:
         if not data:
             return json.dumps({'success': False})
         return json.dumps({'success': True, 'data': data})
+
+
+class MapFactorEdit:
+    def GET(self, hash, factor_id):
+        if 'map' not in web.web_session or web.web_session.map != hash:
+            raise web.seeother('/')
+        try:
+            m = Map(hash=hash)
+        except MapException:
+            raise web.seeother('/')
+
+        factor = m.get_factor(factor_id)
+        if factor:
+            return render.base(render.map.edit_factor(factor, hash))
+        show_map(m)
+
+    def POST(self):
+        data = web.input()
+        hash = data.mapHash
+        factor_id = data.factorId
+        factor_name = data.factorName
+
+        if not hash or not factor_id or not factor_name:
+            raise web.seeother('/')
+
+        if 'map' not in web.web_session or web.web_session.map != hash:
+            raise web.seeother('/')
+
+        try:
+            m = Map(hash=hash)
+        except MapException:
+            raise web.seeother('/')
+
+        factor = m.get_factor(factor_id)
+        if factor:
+            m.edit_factor(factor_id, factor_name)
+        show_map(m)

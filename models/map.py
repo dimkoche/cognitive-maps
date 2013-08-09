@@ -83,9 +83,9 @@ class Map():
         self.relations = {}
         self.koef = {}
         for f in factors:
-            self.factors.append(f['name'])
+            self.factors.append({'id': f['id'], 'name': f['name']})
             self.koef[f['name']] = f['koef']
-        print self.factors, self.koef
+
         for r in relations:
             f1 = r['f2_name']
             f2 = r['f1_name']
@@ -97,8 +97,14 @@ class Map():
     def get_factors(self):
         return [f for f in self.factors]
 
+    def get_factor(self, factor_id):
+        res = DB.select('map_factor', where="map_id=$mid AND id=$fid", vars={'mid': self.id, 'fid': factor_id})
+        if res:
+            return res[0]
+        return None
+
     def add_factor(self, factor):
-        max_len = 64
+        max_len = 32
         if len(factor) > max_len:
             raise MapException('Factor name is too long (Max name length = %d)' % max_len)
 
@@ -126,6 +132,23 @@ class Map():
                 f2=f['id']
             )
         return factor_id
+
+    def edit_factor(self, factor_id, factor_name):
+        max_len = 32
+        if len(factor_name) > max_len:
+            raise MapException('Factor name is too long (Max name length = %d)' % max_len)
+
+        DB.update(
+            'map_factor',
+            where='map_id=$map_id AND id=$fid',
+            vars={
+                'map_id': self.id,
+                'fid': factor_id
+            },
+            name=factor_name
+        )
+
+        return True
 
     def change_factor_effect(self, f1, f2, effect):
         effect = int(effect)

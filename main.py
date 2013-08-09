@@ -11,6 +11,8 @@ urls = (
     '/map/update-image', 'views.view.MapUpdateImage',
     '/map/change-koef', 'views.view.MapChangeKoef',
     '/map/get-chart-data', 'views.view.MapGetChartData',
+    '/map/edit-factor', 'views.view.MapFactorEdit',
+    '/map/edit-factor/([0-9a-f]+)/(\d+)', 'views.view.MapFactorEdit',
 )
 
 
