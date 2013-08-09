@@ -6,6 +6,7 @@ email = 'dm.chernyshov@gmail.com'
 
 
 class MockMap:
+    title = 'Map #hash123'
     hash = 'hash123'
     passkey = 'key321'
 
