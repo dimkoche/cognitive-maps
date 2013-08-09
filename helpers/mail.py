@@ -13,12 +13,12 @@ def send_email(email, map, username, password):
 
         You have created a new cognitive map: %s. To start edit this map, open URL in your browser: http://d0h.ru/map/show/%s?key=%s
 
-        d'Oh.ru
+        d0h.ru
     """
     html = """
         <p>Hi!</p>
         <p>You have created a new cognitive map: %s. <a href="http://d0h.ru/map/show/%s?key=%s">Start edit this map</a></p>
-        <p>d'Oh.ru</p>
+        <p><a href="http://d0h.ru">d'Oh.ru</a></p>
     """
     if is_email_valid(email):
         s = sendgrid.Sendgrid(username, password, secure=True)
