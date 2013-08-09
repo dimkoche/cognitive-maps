@@ -1,4 +1,5 @@
 import web
+from config import is_production
 
 urls = (
     '/', 'views.view.Index',
@@ -12,9 +13,17 @@ urls = (
     '/map/get-chart-data', 'views.view.MapGetChartData',
 )
 
+
+def internalerror():
+    return web.internalerror("Bad, bad server. No donut for you.")
+
 if __name__ == "__main__":
     app = web.application(urls, globals())
-    app.internalerror = web.debugerror
+
+    if is_production:
+        app.internalerror = internalerror
+    else:
+        app.internalerror = web.debugerror
 
     session = web.session.Session(
         app,

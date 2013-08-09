@@ -1,0 +1,12 @@
+$def with (factor, hash)
+
+<div class="page-header">
+    <h4>Редактирование фактора: $factor.name</h4>
+</div>
+<form class="form-inline" action="/map/edit-factor" method="POST">
+    <input type="hidden" name="mapHash" value="$hash">
+    <input type="text" class="form-control map-show-factor-name" name="factorName" placeholder="Factor name" value="$factor.name">
+    <button type="submit" class="btn btn-default">Save</button>
+</form>
+
+<div class="page-header"><p><a class="btn btn-default" href="/map/show/$hash">Back to model</a></p></div>
